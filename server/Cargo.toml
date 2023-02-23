@@ -7,5 +7,7 @@ edition = "2021"
 
 [dependencies]
 anyhow = "1.0.69"
+async-graphql = "5.0.6"
 async-graphql-rocket = "5.0.6"
+rocket = "0.5.0-rc.2"
 thiserror = "1.0.38"
