@@ -1,10 +1,17 @@
 use anyhow::Result;
 use async_graphql::{
-    http::GraphiQLSource, Context, EmptyMutation, EmptySubscription, Object, Schema,
+    http::GraphiQLSource, Context, EmptyMutation, EmptySubscription, Object, Schema, SimpleObject,
 };
 use async_graphql_rocket::{GraphQLQuery, GraphQLRequest, GraphQLResponse};
 use rocket::{response::content, State};
-use sqlx::SqlitePool;
+use sqlx::{FromRow, SqlitePool};
+
+#[derive(SimpleObject, FromRow)]
+pub struct Post {
+    id: i32,
+    text: String,
+    posted_at: Option<String>, // DateTime 型だと SimpleObject の型に一致しない
+}
 
 struct QueryRoot;
 
@@ -13,6 +20,14 @@ impl QueryRoot {
     async fn hello<'ctx>(&self, ctx: &Context<'ctx>) -> Result<String> {
         let pool = ctx.data::<SqlitePool>().unwrap();
         let (res,): (String,) = sqlx::query_as("select 'World!'").fetch_one(pool).await?;
+        Ok(res)
+    }
+
+    async fn posts<'ctx>(&self, ctx: &Context<'ctx>) -> Result<Vec<Post>> {
+        let pool = ctx.data::<SqlitePool>().unwrap();
+        let res = sqlx::query_as::<_, Post>("select * from posts")
+            .fetch_all(pool)
+            .await?;
         Ok(res)
     }
 }
