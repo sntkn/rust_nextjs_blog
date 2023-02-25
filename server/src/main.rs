@@ -1,12 +1,12 @@
 use anyhow::Result;
 use async_graphql::{
-    http::GraphiQLSource, Context, EmptyMutation, EmptySubscription, Object, Schema, SimpleObject,
+    http::GraphiQLSource, Context, EmptySubscription, InputObject, Object, Schema, SimpleObject,
 };
 use async_graphql_rocket::{GraphQLQuery, GraphQLRequest, GraphQLResponse};
 use rocket::{response::content, State};
 use sqlx::{FromRow, SqlitePool};
 
-#[derive(SimpleObject, FromRow)]
+#[derive(SimpleObject, FromRow, Debug)]
 pub struct Post {
     id: i32,
     text: String,
@@ -32,7 +32,35 @@ impl QueryRoot {
     }
 }
 
-type BlogSchema = Schema<QueryRoot, EmptyMutation, EmptySubscription>;
+#[derive(InputObject)]
+struct CreatePost {
+    text: String,
+    posted_at: String,
+}
+
+struct MutationRoot;
+
+#[Object]
+impl MutationRoot {
+    async fn post<'ctx>(&self, ctx: &Context<'ctx>, input: CreatePost) -> Result<Post> {
+        let pool = ctx.data::<SqlitePool>().unwrap();
+        let sql = r#"
+        INSERT INTO posts (text, posted_at, created_at, updated_at)
+            values($1, $2, datetime ('now', 'localtime'), datetime ('now', 'localtime'))
+        RETURNING
+            *
+        "#;
+        let res = sqlx::query_as::<_, Post>(sql)
+            .bind(input.text)
+            .bind(input.posted_at)
+            .fetch_one(pool)
+            .await
+            .unwrap();
+        Ok(res)
+    }
+}
+
+type BlogSchema = Schema<QueryRoot, MutationRoot, EmptySubscription>;
 
 #[rocket::get("/")]
 fn graphiql() -> content::RawHtml<String> {
@@ -54,7 +82,7 @@ async fn rocket() -> _ {
     let pool = SqlitePool::connect("sqlite://db.sqlite?mode=rwc")
         .await
         .unwrap();
-    let schema = Schema::build(QueryRoot, EmptyMutation, EmptySubscription)
+    let schema = Schema::build(QueryRoot, MutationRoot, EmptySubscription)
         .data(pool)
         .finish();
     rocket::build().manage(schema).mount(
