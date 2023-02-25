@@ -23,6 +23,15 @@ impl QueryRoot {
         Ok(res)
     }
 
+    async fn post<'ctx>(&self, ctx: &Context<'ctx>, id: i32) -> Result<Post> {
+        let pool = ctx.data::<SqlitePool>().unwrap();
+        let res = sqlx::query_as::<_, Post>("select * from posts where id=$1")
+            .bind(id)
+            .fetch_one(pool)
+            .await?;
+        Ok(res)
+    }
+
     async fn posts<'ctx>(&self, ctx: &Context<'ctx>) -> Result<Vec<Post>> {
         let pool = ctx.data::<SqlitePool>().unwrap();
         let res = sqlx::query_as::<_, Post>("select * from posts")
@@ -54,8 +63,7 @@ impl MutationRoot {
             .bind(input.text)
             .bind(input.posted_at)
             .fetch_one(pool)
-            .await
-            .unwrap();
+            .await?;
         Ok(res)
     }
 }
