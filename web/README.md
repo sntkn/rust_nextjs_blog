@@ -1,5 +1,9 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+## Setup
+
+Prettier の設定は <https://zenn.dev/shimakaze_soft/articles/57642e22124968> を参考にした
+
 ## Getting Started
 
 First, run the development server:
