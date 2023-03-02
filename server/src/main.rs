@@ -27,7 +27,11 @@ async fn graphql_request(schema: &State<BlogSchema>, request: GraphQLRequest) ->
 async fn rocket() -> _ {
     let pool = DbPool::pool().await.unwrap();
 
-    let allowed_origins = AllowedOrigins::some_exact(&["http://localhost:3000"]);
+    let allowed_origins = AllowedOrigins::some_exact(&[
+        "http://localhost:3000",
+        "http://localhost:8000",
+        "http://127.0.0.1:8000",
+    ]);
 
     // You can also deserialize this
     let cors = rocket_cors::CorsOptions {
