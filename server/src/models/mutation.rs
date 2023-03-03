@@ -5,14 +5,16 @@ use sqlx::SqlitePool;
 
 #[derive(InputObject)]
 struct CreatePost {
-    text: String,
+    title: String,
+    body: String,
     posted_at: String,
 }
 
 #[derive(InputObject, Debug)]
 struct UpdatePost {
     id: i32,
-    text: Option<String>,
+    title: Option<String>,
+    body: Option<String>,
     posted_at: Option<String>,
 }
 
@@ -23,13 +25,14 @@ impl MutationRoot {
     async fn create_post<'ctx>(&self, ctx: &Context<'ctx>, input: CreatePost) -> Result<Post> {
         let pool = ctx.data::<SqlitePool>().unwrap();
         let sql = r#"
-        INSERT INTO posts (text, posted_at, created_at, updated_at)
-            values($1, $2, datetime ('now', 'localtime'), datetime ('now', 'localtime'))
+        INSERT INTO posts (title, body, posted_at, created_at, updated_at)
+            values($1, $2, $3, datetime ('now', 'localtime'), datetime ('now', 'localtime'))
         RETURNING
             *
         "#;
         let res = sqlx::query_as::<_, Post>(sql)
-            .bind(input.text)
+            .bind(input.title)
+            .bind(input.body)
             .bind(input.posted_at)
             .fetch_one(pool)
             .await?;
@@ -39,13 +42,14 @@ impl MutationRoot {
     async fn update_post<'ctx>(&self, ctx: &Context<'ctx>, input: UpdatePost) -> Result<Post> {
         let pool = ctx.data::<SqlitePool>().unwrap();
         let sql = r#"
-        UPDATE posts set text=$1, posted_at=$2, updated_at=datetime ('now', 'localtime')
+        UPDATE posts set title=$1, body=$1, posted_at=$2, updated_at=datetime ('now', 'localtime')
         WHERE id=$3
         RETURNING
             *
         "#;
         let res = sqlx::query_as::<_, Post>(sql)
-            .bind(input.text)
+            .bind(input.title)
+            .bind(input.body)
             .bind(input.posted_at)
             .bind(input.id)
             .fetch_one(pool)

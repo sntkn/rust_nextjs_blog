@@ -11,6 +11,7 @@ pub type BlogSchema = Schema<QueryRoot, MutationRoot, EmptySubscription>;
 #[derive(SimpleObject, FromRow, Debug)]
 pub struct Post {
     id: i32,
-    text: String,
+    title: String,
+    body: String,
     posted_at: Option<String>, // DateTime 型だと SimpleObject の型に一致しない
 }

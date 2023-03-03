@@ -13,7 +13,8 @@ const postsQueryDocument = graphql(/* GraphQL */ `
   query PostsQuery {
     posts {
       id
-      text
+      title
+      body
     }
   }
 `);
@@ -30,7 +31,7 @@ const Posts = () => {
       <ul>
         {data.posts.map((post) => (
           <li key={post.id} className="underline">
-            {post.text}
+            {post.title}
           </li>
         ))}
       </ul>

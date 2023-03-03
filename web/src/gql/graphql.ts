@@ -15,8 +15,9 @@ export type Scalars = {
 };
 
 export type CreatePost = {
+  body: Scalars["String"];
   postedAt: Scalars["String"];
-  text: Scalars["String"];
+  title: Scalars["String"];
 };
 
 export type MutationRoot = {
@@ -40,9 +41,10 @@ export type MutationRootUpdatePostArgs = {
 
 export type Post = {
   __typename?: "Post";
+  body: Scalars["String"];
   id: Scalars["Int"];
   postedAt?: Maybe<Scalars["String"]>;
-  text: Scalars["String"];
+  title: Scalars["String"];
 };
 
 export type QueryRoot = {
@@ -57,16 +59,17 @@ export type QueryRootPostArgs = {
 };
 
 export type UpdatePost = {
+  body?: InputMaybe<Scalars["String"]>;
   id: Scalars["Int"];
   postedAt?: InputMaybe<Scalars["String"]>;
-  text?: InputMaybe<Scalars["String"]>;
+  title?: InputMaybe<Scalars["String"]>;
 };
 
 export type PostsQueryQueryVariables = Exact<{ [key: string]: never }>;
 
 export type PostsQueryQuery = {
   __typename?: "QueryRoot";
-  posts: Array<{ __typename?: "Post"; id: number; text: string }>;
+  posts: Array<{ __typename?: "Post"; id: number; title: string; body: string }>;
 };
 
 export const PostsQueryDocument = {
@@ -86,7 +89,8 @@ export const PostsQueryDocument = {
               kind: "SelectionSet",
               selections: [
                 { kind: "Field", name: { kind: "Name", value: "id" } },
-                { kind: "Field", name: { kind: "Name", value: "text" } },
+                { kind: "Field", name: { kind: "Name", value: "title" } },
+                { kind: "Field", name: { kind: "Name", value: "body" } },
               ],
             },
           },
