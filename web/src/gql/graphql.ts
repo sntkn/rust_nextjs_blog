@@ -51,11 +51,16 @@ export type QueryRoot = {
   __typename?: "QueryRoot";
   hello: Scalars["String"];
   post: Post;
+  postByTitle: Post;
   posts: Array<Post>;
 };
 
 export type QueryRootPostArgs = {
   id: Scalars["Int"];
+};
+
+export type QueryRootPostByTitleArgs = {
+  title: Scalars["String"];
 };
 
 export type UpdatePost = {
@@ -65,6 +70,15 @@ export type UpdatePost = {
   title?: InputMaybe<Scalars["String"]>;
 };
 
+export type PostByTitleQueryQueryVariables = Exact<{
+  title: Scalars["String"];
+}>;
+
+export type PostByTitleQueryQuery = {
+  __typename?: "QueryRoot";
+  postByTitle: { __typename?: "Post"; id: number; title: string; body: string };
+};
+
 export type PostsQueryQueryVariables = Exact<{ [key: string]: never }>;
 
 export type PostsQueryQuery = {
@@ -72,6 +86,50 @@ export type PostsQueryQuery = {
   posts: Array<{ __typename?: "Post"; id: number; title: string; body: string }>;
 };
 
+export const PostByTitleQueryDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "postByTitleQuery" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "title" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "postByTitle" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "title" },
+                value: { kind: "Variable", name: { kind: "Name", value: "title" } },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "title" } },
+                { kind: "Field", name: { kind: "Name", value: "body" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<PostByTitleQueryQuery, PostByTitleQueryQueryVariables>;
 export const PostsQueryDocument = {
   kind: "Document",
   definitions: [
