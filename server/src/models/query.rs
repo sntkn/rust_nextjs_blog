@@ -21,6 +21,15 @@ impl QueryRoot {
         Ok(res)
     }
 
+    async fn post_by_title<'ctx>(&self, ctx: &Context<'ctx>, title: String) -> Result<Post> {
+        let pool = ctx.data::<SqlitePool>().unwrap();
+        let res = sqlx::query_as::<_, Post>("select * from posts where title=$1")
+            .bind(title)
+            .fetch_one(pool)
+            .await?;
+        Ok(res)
+    }
+
     async fn posts<'ctx>(&self, ctx: &Context<'ctx>) -> Result<Vec<Post>> {
         let pool = ctx.data::<SqlitePool>().unwrap();
         let res = sqlx::query_as::<_, Post>("select * from posts")
