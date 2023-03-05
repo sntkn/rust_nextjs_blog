@@ -1,12 +1,7 @@
 "use client";
-import React from "react";
 import { graphql } from "@/gql";
 import { useQuery } from "urql";
-import { createClient, Provider } from "urql";
-
-const client = createClient({
-  url: "http://localhost:8000/graphql",
-});
+import GqlClient from "@/app/gql_client";
 
 const postByTitleQueryDocument = graphql(/* GraphQL */ `
   query postByTitleQuery ($title: String!) {
@@ -18,10 +13,14 @@ const postByTitleQueryDocument = graphql(/* GraphQL */ `
   }
 `);
 
-const PostByTitle = (props: { title: string }) => {
+type PostByTitleProps = {
+  title: string;
+};
+
+const PostByTitle = ({ title }: PostByTitleProps) => {
   const [result, reexecuteQuery] = useQuery({
     query: postByTitleQueryDocument,
-    variables: { title: props.title },
+    variables: { title },
   });
   const { data, fetching, error } = result;
   if (fetching) return <p>Loading...</p>;
@@ -37,8 +36,8 @@ const PostByTitle = (props: { title: string }) => {
 
 export default function Article({ params }: { params: { title: string } }) {
   return (
-    <Provider value={client}>
+    <GqlClient>
       <PostByTitle title={params.title} />
-    </Provider>
+    </GqlClient>
   );
 }

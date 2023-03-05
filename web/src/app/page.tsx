@@ -3,6 +3,7 @@ import React from "react";
 import { graphql } from "@/gql";
 import { useQuery } from "urql";
 import { createClient, Provider } from "urql";
+import Link from "next/link";
 
 const client = createClient({
   url: "http://localhost:8000/graphql",
@@ -31,7 +32,7 @@ const Posts = () => {
       <ul>
         {data.posts.map((post) => (
           <li key={post.id} className="underline">
-            {post.title}
+            <Link href={`/articles/${post.title}`}>{post.title}</Link>
           </li>
         ))}
       </ul>
