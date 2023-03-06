@@ -34,7 +34,7 @@ const PostByTitle = ({ title }: PostByTitleProps) => {
   );
 };
 
-export default function Article({ params }: { params: { title: string } }) {
+export default function ArticleDetail({ params }: { params: { title: string } }) {
   return (
     <GqlClient>
       <PostByTitle title={params.title} />

@@ -4,6 +4,7 @@ import { graphql } from "@/gql";
 import { useQuery } from "urql";
 import { createClient, Provider } from "urql";
 import Link from "next/link";
+import { Card, Elevation } from "@blueprintjs/core";
 
 const client = createClient({
   url: "http://localhost:8000/graphql",
@@ -31,9 +32,12 @@ const Posts = () => {
       <h1 className="text-3xl font-bold">Posts</h1>
       <ul>
         {data.posts.map((post) => (
-          <li key={post.id} className="underline">
-            <Link href={`/articles/${post.title}`}>{post.title}</Link>
-          </li>
+          <Card className="my-8 mx-8" key={post.id} interactive={false} elevation={Elevation.TWO}>
+            <h2 className="text-xl font-bold">
+              <Link href={`/articles/${post.title}`}>{post.title}</Link>
+            </h2>
+            <p>{post.body}</p>
+          </Card>
         ))}
       </ul>
     </>
