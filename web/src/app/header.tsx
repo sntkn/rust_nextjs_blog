@@ -11,7 +11,12 @@ export default function Header() {
         </Navbar.Heading>
         <Navbar.Divider />
         <Button className="bp4-minimal" icon="home" text="Home" />
-        <Button className="bp4-minimal" icon="document" text="Create Post" />
+        <Button
+          className="bp4-minimal"
+          icon="document"
+          text="Create Post"
+          onClick={() => (location.href = "/articles/new")}
+        />
       </Navbar.Group>
     </Navbar>
   );
