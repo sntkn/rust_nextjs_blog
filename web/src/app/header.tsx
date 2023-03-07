@@ -1,5 +1,5 @@
 "use client";
-import { Button, Navbar, Alignment } from "./common/components";
+import { Button, Navbar, Alignment } from "./components/common";
 import Link from "next/link";
 
 export default function Header() {
