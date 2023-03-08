@@ -1,12 +1,30 @@
 "use client";
 
 import { useState } from "react";
-import { FormGroup, InputGroup, Card, TextArea } from "@/app/components/common";
+import { graphql } from "@/gql";
+import { FormGroup, InputGroup, Card, TextArea, Button } from "@/app/components/common";
 import ReactMarkdown from "react-markdown";
+import { useMutation } from "urql";
+import dayjs from "dayjs";
+
+const createPostMutationDocument = graphql(/* GraphQL */ `
+  mutation createPostMutation ($title: String!, $body: String!, $postedAt: String!) {
+    createPost (input: {title: $title, body: $body, postedAt: $postedAt}) {
+      id
+      title
+      body
+    }
+  }
+`);
 
 export default function NewArticle() {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
+  const [createPostResult, createPost] = useMutation(createPostMutationDocument);
+  const handleCreate = async () => {
+    await createPost({ title, body, postedAt: dayjs().format() });
+    return !createPostResult.error;
+  };
   return (
     <div className="grid grid-cols-2 gap-2">
       <Card className="my-8 mx-4" interactive={false} elevation={2}>
@@ -37,6 +55,12 @@ export default function NewArticle() {
             value={body}
           ></TextArea>
         </FormGroup>
+        <Button
+          className="bp4-minimal"
+          icon="document"
+          text="Create"
+          onClick={() => handleCreate()}
+        />
       </Card>
       <Card className="my-8 mx-4" interactive={false} elevation={2}>
         <ReactMarkdown>{body}</ReactMarkdown>

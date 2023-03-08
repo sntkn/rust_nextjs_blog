@@ -70,6 +70,17 @@ export type UpdatePost = {
   title?: InputMaybe<Scalars["String"]>;
 };
 
+export type CreatePostMutationMutationVariables = Exact<{
+  title: Scalars["String"];
+  body: Scalars["String"];
+  postedAt: Scalars["String"];
+}>;
+
+export type CreatePostMutationMutation = {
+  __typename?: "MutationRoot";
+  createPost: { __typename?: "Post"; id: number; title: string; body: string };
+};
+
 export type PostByTitleQueryQueryVariables = Exact<{
   title: Scalars["String"];
 }>;
@@ -83,9 +94,94 @@ export type PostsQueryQueryVariables = Exact<{ [key: string]: never }>;
 
 export type PostsQueryQuery = {
   __typename?: "QueryRoot";
-  posts: Array<{ __typename?: "Post"; id: number; title: string; body: string }>;
+  posts: Array<{
+    __typename?: "Post";
+    id: number;
+    title: string;
+    body: string;
+    postedAt?: string | null;
+  }>;
 };
 
+export const CreatePostMutationDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "createPostMutation" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "title" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "body" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "postedAt" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "createPost" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "input" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "title" },
+                      value: { kind: "Variable", name: { kind: "Name", value: "title" } },
+                    },
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "body" },
+                      value: { kind: "Variable", name: { kind: "Name", value: "body" } },
+                    },
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "postedAt" },
+                      value: { kind: "Variable", name: { kind: "Name", value: "postedAt" } },
+                    },
+                  ],
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "title" } },
+                { kind: "Field", name: { kind: "Name", value: "body" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<CreatePostMutationMutation, CreatePostMutationMutationVariables>;
 export const PostByTitleQueryDocument = {
   kind: "Document",
   definitions: [
@@ -149,6 +245,7 @@ export const PostsQueryDocument = {
                 { kind: "Field", name: { kind: "Name", value: "id" } },
                 { kind: "Field", name: { kind: "Name", value: "title" } },
                 { kind: "Field", name: { kind: "Name", value: "body" } },
+                { kind: "Field", name: { kind: "Name", value: "postedAt" } },
               ],
             },
           },

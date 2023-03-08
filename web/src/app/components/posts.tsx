@@ -12,6 +12,7 @@ const postsQueryDocument = graphql(/* GraphQL */ `
       id
       title
       body
+      postedAt
     }
   }
 `);
@@ -32,6 +33,7 @@ export const Posts = () => {
               <Link href={`/articles/${post.title}`}>{post.title}</Link>
             </h2>
             <p>{post.body}</p>
+            <p>posted at {post.postedAt}</p>
           </Card>
         ))}
       </ul>

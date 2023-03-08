@@ -1,5 +1,6 @@
 import "./globals.css";
 import Header from "./header";
+import { GqlClient } from "@/app/components/gql_client";
 
 export const metadata = {
   title: "Create Next App",
@@ -11,7 +12,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body>
         <Header />
-        {children}
+        <GqlClient>{children}</GqlClient>
       </body>
     </html>
   );
