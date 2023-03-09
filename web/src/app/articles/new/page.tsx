@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { graphql } from "@/gql";
-import { FormGroup, InputGroup, Card, TextArea, Button } from "@/app/components/common";
+import { FormGroup, InputGroup, Card, TextArea, Button, Intent } from "@blueprintjs/core";
 import ReactMarkdown from "react-markdown";
 import { useMutation } from "urql";
 import dayjs from "dayjs";
+import { useRouter } from "next/navigation";
 
 const createPostMutationDocument = graphql(/* GraphQL */ `
   mutation createPostMutation ($title: String!, $body: String!, $postedAt: String!) {
@@ -18,13 +19,17 @@ const createPostMutationDocument = graphql(/* GraphQL */ `
 `);
 
 export default function NewArticle() {
+  const router = useRouter();
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [createPostResult, createPost] = useMutation(createPostMutationDocument);
-  const handleCreate = async () => {
-    await createPost({ title, body, postedAt: dayjs().format() });
-    return !createPostResult.error;
-  };
+  const handleCreate = useCallback(async () => {
+    const result = await createPost({ title, body, postedAt: dayjs().format() });
+    if (!result.error) {
+      router.push(`/articles/${title}`);
+    }
+  }, [title, body, createPost, router]);
+
   return (
     <div className="grid grid-cols-2 gap-2">
       <Card className="my-8 mx-4" interactive={false} elevation={2}>
@@ -35,6 +40,7 @@ export default function NewArticle() {
           labelInfo="(required)"
         >
           <InputGroup
+            large
             id="title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
@@ -48,7 +54,8 @@ export default function NewArticle() {
           labelInfo="(required)"
         >
           <TextArea
-            className="bp4-fill"
+            fill
+            rows={20}
             onChange={(e) => setBody(e.target.value)}
             id="body"
             placeholder="Type something..."
@@ -56,7 +63,7 @@ export default function NewArticle() {
           ></TextArea>
         </FormGroup>
         <Button
-          className="bp4-minimal"
+          intent={Intent.PRIMARY}
           icon="document"
           text="Create"
           onClick={() => handleCreate()}
