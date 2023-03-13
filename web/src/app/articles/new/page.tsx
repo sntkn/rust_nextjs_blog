@@ -1,7 +1,6 @@
 "use client";
-
 import { useCallback, useState } from "react";
-import { createPost } from "@/app/components/create_post";
+import { createPost } from "@/gql/mutation/create_post";
 import { FormGroup, InputGroup, Card, TextArea, Button, Intent } from "@blueprintjs/core";
 import ReactMarkdown from "react-markdown";
 import dayjs from "dayjs";

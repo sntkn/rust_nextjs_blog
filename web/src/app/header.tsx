@@ -1,5 +1,5 @@
 "use client";
-import { Button, Navbar, Alignment } from "./components/common";
+import { Button, Navbar, Alignment } from "@blueprintjs/core";
 import Link from "next/link";
 
 export default function Header() {

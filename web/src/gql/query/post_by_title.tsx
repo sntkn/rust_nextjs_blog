@@ -1,8 +1,8 @@
 "use client";
-import { graphql } from "@/gql";
+import gql from "graphql-tag";
 import { graphQLClient } from "@/lib/graphql-client";
 
-const postByTitleQueryDocument = graphql(/* GraphQL */ `
+const postByTitleQueryDocument = gql`
   query postByTitleQuery ($title: String!) {
     postByTitle (title: $title) {
       id
@@ -10,7 +10,7 @@ const postByTitleQueryDocument = graphql(/* GraphQL */ `
       body
     }
   }
-`);
+`;
 
 type PostByTitleProps = {
   title: string;

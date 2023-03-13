@@ -1,7 +1,7 @@
 "use client";
 import { use } from "react";
 import Link from "next/link";
-import { posts } from "@/app/components/posts";
+import { posts } from "@/gql/query/posts";
 import { Card } from "@blueprintjs/core";
 
 export default function Home() {

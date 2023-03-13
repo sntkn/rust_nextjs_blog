@@ -1,8 +1,8 @@
 "use client";
-import { graphql } from "@/gql";
+import gql from "graphql-tag";
 import { graphQLClient } from "@/lib/graphql-client";
 
-const createPostMutationDocument = graphql(/* GraphQL */ `
+const createPostMutationDocument = gql`
   mutation createPostMutation ($title: String!, $body: String!, $postedAt: String!) {
     createPost (input: {title: $title, body: $body, postedAt: $postedAt}) {
       id
@@ -10,7 +10,7 @@ const createPostMutationDocument = graphql(/* GraphQL */ `
       body
     }
   }
-`);
+`;
 
 type CreatePostProps = {
   title: string;

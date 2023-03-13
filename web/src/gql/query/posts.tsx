@@ -1,8 +1,8 @@
-import { graphql } from "@/gql";
+import gql from "graphql-tag";
 import { graphQLClient } from "@/lib/graphql-client";
 
 // postsQueryDocument is now fully typed!
-const postsQueryDocument = graphql(/* GraphQL */ `
+const postsQueryDocument = gql`
   query PostsQuery {
     posts {
       id
@@ -11,7 +11,7 @@ const postsQueryDocument = graphql(/* GraphQL */ `
       postedAt
     }
   }
-`);
+`;
 
 export const posts = async () => {
   const result = await graphQLClient.PostsQuery();

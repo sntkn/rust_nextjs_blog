@@ -1,6 +1,6 @@
 "use client";
 import { use } from "react";
-import { postByTitle } from "@/app/components/post_by_title";
+import { postByTitle } from "@/gql/query/post_by_title";
 
 export default function ArticleDetail({ params }: { params: { title: string } }) {
   const data = use(postByTitle({ title: params.title }));
