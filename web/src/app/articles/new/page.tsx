@@ -1,34 +1,22 @@
 "use client";
 
 import { useCallback, useState } from "react";
-import { graphql } from "@/gql";
+import { createPost } from "@/app/components/create_post";
 import { FormGroup, InputGroup, Card, TextArea, Button, Intent } from "@blueprintjs/core";
 import ReactMarkdown from "react-markdown";
-import { useMutation } from "urql";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 
-const createPostMutationDocument = graphql(/* GraphQL */ `
-  mutation createPostMutation ($title: String!, $body: String!, $postedAt: String!) {
-    createPost (input: {title: $title, body: $body, postedAt: $postedAt}) {
-      id
-      title
-      body
-    }
-  }
-`);
-
-export default function NewArticle() {
+export default function NewPost() {
   const router = useRouter();
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
-  const [createPostResult, createPost] = useMutation(createPostMutationDocument);
   const handleCreate = useCallback(async () => {
     const result = await createPost({ title, body, postedAt: dayjs().format() });
-    if (!result.error) {
+    if (!result) {
       router.push(`/articles/${title}`);
     }
-  }, [title, body, createPost, router]);
+  }, [title, body, router]);
 
   return (
     <div className="grid grid-cols-2 gap-2">
