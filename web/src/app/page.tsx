@@ -1,11 +1,9 @@
-"use client";
-import { use } from "react";
 import Link from "next/link";
 import { posts } from "@/gql/query/posts";
-import { Card } from "@blueprintjs/core";
+import { Card } from "@/app/blueprint";
 
-export default function Home() {
-  const data = use(posts());
+export default async function Home() {
+  const data = await posts();
   return (
     <>
       <h1 className="text-3xl font-bold">Posts</h1>

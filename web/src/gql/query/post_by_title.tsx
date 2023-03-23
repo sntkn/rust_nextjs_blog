@@ -1,4 +1,3 @@
-"use client";
 import gql from "graphql-tag";
 import { graphQLClient } from "@/lib/graphql-client";
 
