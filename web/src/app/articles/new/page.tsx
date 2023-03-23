@@ -2,7 +2,7 @@
 import { useCallback, useState } from "react";
 import { createPost } from "@/gql/mutation/create_post";
 import { FormGroup, InputGroup, Card, TextArea, Button, Intent } from "@blueprintjs/core";
-import ReactMarkdown from "react-markdown";
+import PostBody from "@/app/postbody";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 
@@ -57,7 +57,7 @@ export default function NewPost() {
         />
       </Card>
       <Card className="my-8 mx-4" interactive={false} elevation={2}>
-        <ReactMarkdown>{body}</ReactMarkdown>
+        <PostBody body={body} />
       </Card>
     </div>
   );
