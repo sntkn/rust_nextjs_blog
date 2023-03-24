@@ -6,9 +6,8 @@ export default async function ArticleDetail({ params }: { params: { title: strin
   const data = await postByTitle({ title: params.title });
   return (
     <>
-      <h1>記事の詳細</h1>
-      <Card>
-        <p>記事のタイトル: {data.title}</p>
+      <Card elevation={4} className="my-5">
+        <h1 className="text-2xl my-3">{data.title}</h1>
         <PostBody body={data.body} />
       </Card>
     </>
