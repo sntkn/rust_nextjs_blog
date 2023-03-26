@@ -42,8 +42,8 @@ impl MutationRoot {
     async fn update_post<'ctx>(&self, ctx: &Context<'ctx>, input: UpdatePost) -> Result<Post> {
         let pool = ctx.data::<SqlitePool>().unwrap();
         let sql = r#"
-        UPDATE posts set title=$1, body=$1, posted_at=$2, updated_at=datetime ('now', 'localtime')
-        WHERE id=$3
+        UPDATE posts set title=$1, body=$2, posted_at=$3, updated_at=datetime ('now', 'localtime')
+        WHERE id=$4
         RETURNING
             *
         "#;

@@ -1,21 +1,25 @@
 "use client";
 import { useCallback, useState } from "react";
-import { createPost } from "@/gql/mutation/create_post";
+import { updatePost } from "@/gql/mutation/update_post";
 import { FormGroup, InputGroup, Card, TextArea, Button, Intent } from "@blueprintjs/core";
 import PostBody from "@/app/postbody";
 import dayjs from "dayjs";
-import { useRouter } from "next/navigation";
+import { Post } from "./page";
 
-export default function NewPost() {
-  const router = useRouter();
-  const [title, setTitle] = useState("");
-  const [body, setBody] = useState("");
-  const handleCreate = useCallback(async () => {
-    const result = await createPost({ title, body, postedAt: dayjs().format() });
-    if (!result) {
-      router.push(`/articles/${title}`);
+type PostWithHandUpdate = Post & {
+  handleUpdatePost: (post: Post) => void;
+};
+
+export default function EditPost(props: PostWithHandUpdate) {
+  const [title, setTitle] = useState(props.title);
+  const [body, setBody] = useState(props.body);
+  const handleUpdate = useCallback(async () => {
+    const result = await updatePost({ id: props.id, title, body, postedAt: dayjs().format() });
+    if (result) {
+      const postdata: Post = { id: result.id, title: result.title, body: result.body };
+      props.handleUpdatePost(postdata);
     }
-  }, [title, body, router]);
+  }, [props, title, body]);
 
   return (
     <div className="grid grid-cols-2 gap-2">
@@ -29,6 +33,7 @@ export default function NewPost() {
           <InputGroup
             large
             id="title"
+            disabled={true}
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Input content"
@@ -52,8 +57,8 @@ export default function NewPost() {
         <Button
           intent={Intent.PRIMARY}
           icon="document"
-          text="Create"
-          onClick={() => handleCreate()}
+          text="Update"
+          onClick={() => handleUpdate()}
         />
       </Card>
       <Card className="my-8 mx-4" interactive={false} elevation={2}>

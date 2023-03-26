@@ -83,6 +83,18 @@ export type CreatePostMutationMutation = {
   createPost: { __typename?: "Post"; id: number; title: string; body: string };
 };
 
+export type UpdatePostMutationMutationVariables = Exact<{
+  id: Scalars["Int"];
+  title: Scalars["String"];
+  body: Scalars["String"];
+  postedAt: Scalars["String"];
+}>;
+
+export type UpdatePostMutationMutation = {
+  __typename?: "MutationRoot";
+  updatePost: { __typename?: "Post"; id: number; title: string; body: string };
+};
+
 export type PostByTitleQueryQueryVariables = Exact<{
   title: Scalars["String"];
 }>;
@@ -108,6 +120,15 @@ export type PostsQueryQuery = {
 export const CreatePostMutationDocument = gql`
     mutation createPostMutation($title: String!, $body: String!, $postedAt: String!) {
   createPost(input: {title: $title, body: $body, postedAt: $postedAt}) {
+    id
+    title
+    body
+  }
+}
+    `;
+export const UpdatePostMutationDocument = gql`
+    mutation updatePostMutation($id: Int!, $title: String!, $body: String!, $postedAt: String!) {
+  updatePost(input: {id: $id, title: $title, body: $body, postedAt: $postedAt}) {
     id
     title
     body
@@ -142,6 +163,7 @@ export type SdkFunctionWrapper = <T>(
 
 const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationType) => action();
 const CreatePostMutationDocumentString = print(CreatePostMutationDocument);
+const UpdatePostMutationDocumentString = print(UpdatePostMutationDocument);
 const PostByTitleQueryDocumentString = print(PostByTitleQueryDocument);
 const PostsQueryDocumentString = print(PostsQueryDocument);
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
@@ -163,6 +185,26 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
             { ...requestHeaders, ...wrappedRequestHeaders }
           ),
         "createPostMutation",
+        "mutation"
+      );
+    },
+    updatePostMutation(
+      variables: UpdatePostMutationMutationVariables,
+      requestHeaders?: Dom.RequestInit["headers"]
+    ): Promise<{
+      data: UpdatePostMutationMutation;
+      extensions?: any;
+      headers: Dom.Headers;
+      status: number;
+    }> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.rawRequest<UpdatePostMutationMutation>(
+            UpdatePostMutationDocumentString,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        "updatePostMutation",
         "mutation"
       );
     },
