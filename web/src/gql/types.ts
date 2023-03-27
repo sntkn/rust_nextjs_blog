@@ -92,7 +92,13 @@ export type UpdatePostMutationMutationVariables = Exact<{
 
 export type UpdatePostMutationMutation = {
   __typename?: "MutationRoot";
-  updatePost: { __typename?: "Post"; id: number; title: string; body: string };
+  updatePost: {
+    __typename?: "Post";
+    id: number;
+    title: string;
+    body: string;
+    postedAt?: string | null;
+  };
 };
 
 export type PostByTitleQueryQueryVariables = Exact<{
@@ -101,7 +107,13 @@ export type PostByTitleQueryQueryVariables = Exact<{
 
 export type PostByTitleQueryQuery = {
   __typename?: "QueryRoot";
-  postByTitle: { __typename?: "Post"; id: number; title: string; body: string };
+  postByTitle: {
+    __typename?: "Post";
+    id: number;
+    title: string;
+    body: string;
+    postedAt?: string | null;
+  };
 };
 
 export type PostsQueryQueryVariables = Exact<{ [key: string]: never }>;
@@ -132,6 +144,7 @@ export const UpdatePostMutationDocument = gql`
     id
     title
     body
+    postedAt
   }
 }
     `;
@@ -141,6 +154,7 @@ export const PostByTitleQueryDocument = gql`
     id
     title
     body
+    postedAt
   }
 }
     `;

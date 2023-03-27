@@ -8,6 +8,7 @@ const updatePostMutationDocument = gql`
       id
       title
       body
+      postedAt
     }
   }
 `;

@@ -5,10 +5,11 @@ import EditPost from "./edit";
 import { Post } from "./page";
 import PostBody from "@/app/postbody";
 
-const Content = ({ title, body }: Post) => (
+const Content = ({ title, body, postedAt }: Post) => (
   <Card elevation={4} className="my-5">
     <h1 className="text-2xl my-3">{title}</h1>
     <PostBody body={body} />
+    <p>PostedAt: {postedAt}</p>
   </Card>
 );
 

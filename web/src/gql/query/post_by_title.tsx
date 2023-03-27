@@ -7,6 +7,7 @@ const postByTitleQueryDocument = gql`
       id
       title
       body
+      postedAt
     }
   }
 `;
