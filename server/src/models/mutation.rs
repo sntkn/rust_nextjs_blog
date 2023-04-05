@@ -1,7 +1,8 @@
 use super::Post;
 use anyhow::Result;
 use async_graphql::{Context, InputObject, Object};
-use sqlx::SqlitePool;
+use chrono::{DateTime, Utc};
+use sqlx::PgPool;
 
 #[derive(InputObject)]
 struct CreatePost {
@@ -15,7 +16,7 @@ struct UpdatePost {
     id: i32,
     title: Option<String>,
     body: Option<String>,
-    posted_at: Option<String>,
+    posted_at: Option<DateTime<Utc>>,
 }
 
 pub struct MutationRoot;
@@ -23,7 +24,7 @@ pub struct MutationRoot;
 #[Object]
 impl MutationRoot {
     async fn create_post<'ctx>(&self, ctx: &Context<'ctx>, input: CreatePost) -> Result<Post> {
-        let pool = ctx.data::<SqlitePool>().unwrap();
+        let pool = ctx.data::<PgPool>().unwrap();
         let sql = r#"
         INSERT INTO posts (title, body, posted_at, created_at, updated_at)
             values($1, $2, $3, datetime ('now', 'localtime'), datetime ('now', 'localtime'))
@@ -40,13 +41,14 @@ impl MutationRoot {
     }
 
     async fn update_post<'ctx>(&self, ctx: &Context<'ctx>, input: UpdatePost) -> Result<Post> {
-        let pool = ctx.data::<SqlitePool>().unwrap();
+        let pool = ctx.data::<PgPool>().unwrap();
         let sql = r#"
         UPDATE posts set title=$1, body=$2, posted_at=$3, updated_at=datetime ('now', 'localtime')
         WHERE id=$4
         RETURNING
             *
         "#;
+
         let res = sqlx::query_as::<_, Post>(sql)
             .bind(input.title)
             .bind(input.body)
@@ -58,7 +60,7 @@ impl MutationRoot {
     }
 
     async fn delete_post<'ctx>(&self, ctx: &Context<'ctx>, id: i32) -> Result<bool> {
-        let pool = ctx.data::<SqlitePool>().unwrap();
+        let pool = ctx.data::<PgPool>().unwrap();
         let sql = r#"
             DELETE from posts
             WHERE id=$1

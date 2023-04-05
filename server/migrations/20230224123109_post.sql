@@ -1,7 +1,7 @@
 -- Add migration script here
 CREATE TABLE posts
 (
-  id        INTEGER PRIMARY KEY,
+  id        SERIAL PRIMARY KEY,
   title     VARCHAR NOT NULL,
   body      TEXT NOT NULL,
   posted_at TIMESTAMP NULL,

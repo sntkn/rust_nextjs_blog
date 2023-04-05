@@ -7,9 +7,11 @@ edition = "2021"
 
 [dependencies]
 anyhow = "1.0.69"
-async-graphql = "5.0.6"
+async-graphql = {version="5.0.6", features = ["chrono"]}
 async-graphql-rocket = "5.0.6"
+chrono = "0.4.24"
+dotenv = "0.15.0"
 rocket = "0.5.0-rc.2"
 rocket_cors = { git = "https://github.com/lawliet89/rocket_cors", branch = "master" }
-sqlx = {version="0.6.2", features=["runtime-tokio-rustls", "any", "sqlite"]}
+sqlx = {version="0.6.2", features=["runtime-tokio-rustls", "any", "postgres", "chrono"]}
 thiserror = "1.0.38"
