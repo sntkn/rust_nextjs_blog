@@ -1,14 +1,14 @@
 use super::Post;
 use anyhow::Result;
 use async_graphql::{Context, InputObject, Object};
-use chrono::{DateTime, Utc};
+use chrono::NaiveDateTime;
 use sqlx::PgPool;
 
 #[derive(InputObject)]
 struct CreatePost {
     title: String,
     body: String,
-    posted_at: String,
+    posted_at: Option<NaiveDateTime>,
 }
 
 #[derive(InputObject, Debug)]
@@ -16,7 +16,7 @@ struct UpdatePost {
     id: i32,
     title: Option<String>,
     body: Option<String>,
-    posted_at: Option<DateTime<Utc>>,
+    posted_at: Option<NaiveDateTime>,
 }
 
 pub struct MutationRoot;
@@ -27,7 +27,7 @@ impl MutationRoot {
         let pool = ctx.data::<PgPool>().unwrap();
         let sql = r#"
         INSERT INTO posts (title, body, posted_at, created_at, updated_at)
-            values($1, $2, $3, datetime ('now', 'localtime'), datetime ('now', 'localtime'))
+            values($1, $2, $3, now(), now())
         RETURNING
             *
         "#;
@@ -43,7 +43,7 @@ impl MutationRoot {
     async fn update_post<'ctx>(&self, ctx: &Context<'ctx>, input: UpdatePost) -> Result<Post> {
         let pool = ctx.data::<PgPool>().unwrap();
         let sql = r#"
-        UPDATE posts set title=$1, body=$2, posted_at=$3, updated_at=datetime ('now', 'localtime')
+        UPDATE posts set title=$1, body=$2, posted_at=$3, updated_at=now()
         WHERE id=$4
         RETURNING
             *
