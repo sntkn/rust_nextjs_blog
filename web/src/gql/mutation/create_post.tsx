@@ -3,7 +3,7 @@ import gql from "graphql-tag";
 import { graphQLClient } from "@/lib/graphql-client";
 
 const createPostMutationDocument = gql`
-  mutation createPostMutation ($title: String!, $body: String!, $postedAt: NaiveDateTime!) {
+  mutation createPostMutation ($title: String!, $body: String!, $postedAt: DateTime!) {
     createPost (input: {title: $title, body: $body, postedAt: $postedAt}) {
       id
       title

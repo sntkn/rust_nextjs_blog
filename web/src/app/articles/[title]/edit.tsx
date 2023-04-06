@@ -18,7 +18,7 @@ export default function EditPost(props: PostWithHandUpdate) {
       id: props.id,
       title,
       body,
-      postedAt: dayjs().format("YYYY-MM-DDTHH:mm:ss"),
+      postedAt: dayjs().format(),
     });
     if (result) {
       const postdata: Post = {

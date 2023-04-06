@@ -1,6 +1,6 @@
 pub mod mutation;
 pub mod query;
-use chrono::NaiveDateTime;
+use chrono::{DateTime, Utc};
 
 use async_graphql::{EmptySubscription, Schema, SimpleObject};
 use mutation::MutationRoot;
@@ -14,5 +14,5 @@ pub struct Post {
     id: i32,
     title: String,
     body: String,
-    posted_at: Option<NaiveDateTime>,
+    posted_at: Option<DateTime<Utc>>,
 }

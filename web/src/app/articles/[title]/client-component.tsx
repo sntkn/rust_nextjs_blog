@@ -4,12 +4,13 @@ import { Button, Card } from "@/app/blueprint";
 import EditPost from "./edit";
 import { Post } from "./page";
 import PostBody from "@/app/postbody";
+import date from "@/app/formatdate";
 
 const Content = ({ title, body, postedAt }: Post) => (
   <Card elevation={4} className="my-5">
     <h1 className="text-2xl my-3">{title}</h1>
     <PostBody body={body} />
-    <p>PostedAt: {postedAt}</p>
+    <p>PostedAt: {date(postedAt)}</p>
   </Card>
 );
 

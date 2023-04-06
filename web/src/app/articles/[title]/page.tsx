@@ -5,7 +5,7 @@ export type Post = {
   id: number;
   title: string;
   body: string;
-  postedAt: string | null | undefined;
+  postedAt: string;
 };
 
 export default async function PostByTitle({ params }: { params: { title: string } }) {

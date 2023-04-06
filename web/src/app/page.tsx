@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { posts } from "@/gql/query/posts";
 import { Card } from "@/app/blueprint";
+import date from "@/app/formatdate";
 
 export default async function Home() {
   const data = await posts();
@@ -15,7 +16,7 @@ export default async function Home() {
                 <Link href={`/articles/${post.title}`}>{post.title}</Link>
               </h2>
               <p>{post.body}</p>
-              <p>posted at {post.postedAt}</p>
+              <p>posted at {date(post.postedAt)}</p>
             </Card>
           </li>
         ))}

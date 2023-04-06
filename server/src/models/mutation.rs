@@ -1,14 +1,14 @@
 use super::Post;
 use anyhow::Result;
 use async_graphql::{Context, InputObject, Object};
-use chrono::NaiveDateTime;
+use chrono::{DateTime, Utc};
 use sqlx::PgPool;
 
 #[derive(InputObject)]
 struct CreatePost {
     title: String,
     body: String,
-    posted_at: Option<NaiveDateTime>,
+    posted_at: Option<DateTime<Utc>>,
 }
 
 #[derive(InputObject, Debug)]
@@ -16,7 +16,7 @@ struct UpdatePost {
     id: i32,
     title: Option<String>,
     body: Option<String>,
-    posted_at: Option<NaiveDateTime>,
+    posted_at: Option<DateTime<Utc>>,
 }
 
 pub struct MutationRoot;

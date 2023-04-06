@@ -14,7 +14,7 @@ export default function NewPost() {
     const result = await createPost({
       title,
       body,
-      postedAt: dayjs().format("YYYY-MM-DDTHH:mm:ss"),
+      postedAt: dayjs().format(),
     });
     if (result) {
       router.push(`/articles/${title}`);
