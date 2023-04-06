@@ -11,8 +11,12 @@ export default function NewPost() {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const handleCreate = useCallback(async () => {
-    const result = await createPost({ title, body, postedAt: dayjs().format() });
-    if (!result) {
+    const result = await createPost({
+      title,
+      body,
+      postedAt: dayjs().format("YYYY-MM-DDTHH:mm:ss"),
+    });
+    if (result) {
       router.push(`/articles/${title}`);
     }
   }, [title, body, router]);

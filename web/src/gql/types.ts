@@ -14,11 +14,12 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  NaiveDateTime: string;
 };
 
 export type CreatePost = {
   body: Scalars["String"];
-  postedAt: Scalars["String"];
+  postedAt?: InputMaybe<Scalars["NaiveDateTime"]>;
   title: Scalars["String"];
 };
 
@@ -45,7 +46,7 @@ export type Post = {
   __typename?: "Post";
   body: Scalars["String"];
   id: Scalars["Int"];
-  postedAt?: Maybe<Scalars["String"]>;
+  postedAt?: Maybe<Scalars["NaiveDateTime"]>;
   title: Scalars["String"];
 };
 
@@ -68,14 +69,14 @@ export type QueryRootPostByTitleArgs = {
 export type UpdatePost = {
   body?: InputMaybe<Scalars["String"]>;
   id: Scalars["Int"];
-  postedAt?: InputMaybe<Scalars["String"]>;
+  postedAt?: InputMaybe<Scalars["NaiveDateTime"]>;
   title?: InputMaybe<Scalars["String"]>;
 };
 
 export type CreatePostMutationMutationVariables = Exact<{
   title: Scalars["String"];
   body: Scalars["String"];
-  postedAt: Scalars["String"];
+  postedAt: Scalars["NaiveDateTime"];
 }>;
 
 export type CreatePostMutationMutation = {
@@ -87,7 +88,7 @@ export type UpdatePostMutationMutationVariables = Exact<{
   id: Scalars["Int"];
   title: Scalars["String"];
   body: Scalars["String"];
-  postedAt: Scalars["String"];
+  postedAt: Scalars["NaiveDateTime"];
 }>;
 
 export type UpdatePostMutationMutation = {
@@ -97,7 +98,7 @@ export type UpdatePostMutationMutation = {
     id: number;
     title: string;
     body: string;
-    postedAt?: string | null;
+    postedAt?: any | null;
   };
 };
 
@@ -112,7 +113,7 @@ export type PostByTitleQueryQuery = {
     id: number;
     title: string;
     body: string;
-    postedAt?: string | null;
+    postedAt?: any | null;
   };
 };
 
@@ -125,12 +126,12 @@ export type PostsQueryQuery = {
     id: number;
     title: string;
     body: string;
-    postedAt?: string | null;
+    postedAt?: any | null;
   }>;
 };
 
 export const CreatePostMutationDocument = gql`
-    mutation createPostMutation($title: String!, $body: String!, $postedAt: String!) {
+    mutation createPostMutation($title: String!, $body: String!, $postedAt: NaiveDateTime!) {
   createPost(input: {title: $title, body: $body, postedAt: $postedAt}) {
     id
     title
@@ -139,7 +140,7 @@ export const CreatePostMutationDocument = gql`
 }
     `;
 export const UpdatePostMutationDocument = gql`
-    mutation updatePostMutation($id: Int!, $title: String!, $body: String!, $postedAt: String!) {
+    mutation updatePostMutation($id: Int!, $title: String!, $body: String!, $postedAt: NaiveDateTime!) {
   updatePost(input: {id: $id, title: $title, body: $body, postedAt: $postedAt}) {
     id
     title

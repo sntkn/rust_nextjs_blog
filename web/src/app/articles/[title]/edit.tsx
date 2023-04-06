@@ -14,7 +14,12 @@ export default function EditPost(props: PostWithHandUpdate) {
   const [title, setTitle] = useState(props.title);
   const [body, setBody] = useState(props.body);
   const handleUpdate = useCallback(async () => {
-    const result = await updatePost({ id: props.id, title, body, postedAt: dayjs().format() });
+    const result = await updatePost({
+      id: props.id,
+      title,
+      body,
+      postedAt: dayjs().format("YYYY-MM-DDTHH:mm:ss"),
+    });
     if (result) {
       const postdata: Post = {
         id: result.id,
